@@ -1,2 +1,45 @@
-public class Employee{
-  public Employee(
+
+class Employee {
+	
+	private String firstName;
+	private String lastName;
+	private int id;
+	private String pass;
+	private double wage;
+	private double timeWorkedDay;
+	private double timeWorkedWeek;
+	private double timeWorkedAllTime;
+	
+	/*Contructor for the Employee Class Creating an Employee
+	 *@param fname the First Name of the Employee
+	 *@param lname the Last Name of the Employee
+	 *@param idNum the idNumber of the Employee
+	 *@param password the password that the employee would like
+	 *@param wage the wage of the employee
+	 */
+	public Employee(String fname, String lname, int idNum, String password, double wage)
+	{
+		firstName = fname;
+		lastName = lname;
+		id = idNum;
+		pass = password;
+		this.wage = wage;
+	}
+	
+	/*Sets a new password for the employee*/
+	public void setPassword(String password)
+	{
+		pass = password;
+	}
+	
+	/*Sets a new wage for the employee*/
+	public void setWage(double wage)
+	{
+		this.wage = wage;
+	}
+	
+	/*Gets the idNum of the Employee
+	 *@return 
+	
+	
+}
