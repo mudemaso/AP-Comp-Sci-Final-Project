@@ -19,6 +19,9 @@ public class Employee{
 		//hours worked by this employee
 		private ArrayList<TimeClocked> hoursWorked;
 		
+		//Gives the employee Administrative permissions
+		private boolean isAdmin;
+		
 	//constructor
 		public Employee(String inputFromInfoFile)
 			{
