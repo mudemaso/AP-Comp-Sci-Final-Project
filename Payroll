@@ -1,2 +1,29 @@
 public class Payroll{
   
+  public static void createEmployee(Employee worker){
+    //add specified employee to hashtable/arraylist
+  }
+  
+  public static void deleteEmployee(Employee worker){
+    //remove specified employee from hashtable/arraylist
+  }
+  
+  public static void login(String idnum, String Password){
+    //check for id and password to be correct
+  }
+  
+  public static void logout(){
+    
+  }
+  
+  public static void clockIn(Employee worker){
+  
+  }
+  
+  public static void clockOut(Employee worker){
+  
+  }
+  
+  public static ArrayList<Employee> getActiveEmployees(){
+     
+  }
