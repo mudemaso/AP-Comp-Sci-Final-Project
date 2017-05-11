@@ -17,5 +17,5 @@ public class Administrator Extends Employee {
   }
   
   public void updateHourlyPay(double newPay, Employee worker){
-    
+    //updates the pay of the specified worker
   }
