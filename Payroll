@@ -1,5 +1,7 @@
 public class Payroll{
   
+  private Date workStart;
+  private Date workEnd;
   public static void createEmployee(Employee worker){
     //add specified employee to hashtable/arraylist
   }
@@ -17,11 +19,11 @@ public class Payroll{
   }
   
   public static void clockIn(Employee worker){
-  
+    workStart = Date();
   }
   
   public static void clockOut(Employee worker){
-  
+    workEnd = Date();
   }
   
   public static ArrayList<Employee> getActiveEmployees(){
