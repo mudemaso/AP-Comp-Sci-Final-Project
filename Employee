@@ -1,45 +1,58 @@
+import java.util.Date;
+import java.util.ArrayList;
 
-class Employee {
+public class Employee{
 	
-	private String firstName;
-	private String lastName;
-	private int id;
-	private String pass;
-	private double wage;
-	private double timeWorkedDay;
-	private double timeWorkedWeek;
-	private double timeWorkedAllTime;
+	//instance fields
+		private String id;
+		private String firstName;
+		private String lastName;
+		private Double hourlyPay;
+		private String Password;
+		
+		//Checks to see if the user is currently clocked-in
+		private boolean isActive;
+		
+		//The date the employee joined the company
+		private Date startDate;
+		
+		//hours worked by this employee
+		private ArrayList<TimeClocked> hoursWorked;
+		
+	//constructor
+		public Employee(String inputFromInfoFile)
+			{
+			}
 	
-	/*Contructor for the Employee Class Creating an Employee
-	 *@param fname the First Name of the Employee
-	 *@param lname the Last Name of the Employee
-	 *@param idNum the idNumber of the Employee
-	 *@param password the password that the employee would like
-	 *@param wage the wage of the employee
-	 */
-	public Employee(String fname, String lname, int idNum, String password, double wage)
-	{
-		firstName = fname;
-		lastName = lname;
-		id = idNum;
-		pass = password;
-		this.wage = wage;
-	}
-	
-	/*Sets a new password for the employee*/
-	public void setPassword(String password)
-	{
-		pass = password;
-	}
-	
-	/*Sets a new wage for the employee*/
-	public void setWage(double wage)
-	{
-		this.wage = wage;
-	}
-	
-	/*Gets the idNum of the Employee
-	 *@return 
-	
-	
+	//methods
+		//Add historical times clocked as read in from our file
+		public void addTimesClocked(String savedTimeClocked);
+			{
+			}
+		//returns the wages that the employee has earned in the work period
+		public double getPay(Date startDate, Date endDate);
+			{
+			}
+		//Clocks in the employee
+		public void clockIn();
+			{
+			}
+		//Clocks out the employee
+		public void clockOut();
+			{
+			}
+		//lets the employee see how many hours they have worked
+		public double viewHours();
+			{
+			}
+		/*Sets a new password for the employee*/
+			public void setPassword(String password)
+			{
+				pass = password;
+			}
+		/*Sets a new wage for the employee*/
+			public void setWage(double wage)
+			{
+				this.wage = wage;
+			}
 }
