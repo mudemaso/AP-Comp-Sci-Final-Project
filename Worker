@@ -1,2 +1,5 @@
 public class Worker extends Employee{
-  public Worker(
+  public Worker(String fname, String lname, int idNum, String password, double wage){
+    super(fname, lname, idNum, password, wage);
+  }
+}
