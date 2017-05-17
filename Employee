@@ -7,8 +7,9 @@ public class Employee{
 		private String id;
 		private String firstName;
 		private String lastName;
-		private Double hourlyPay;
-		private String Password;
+		private double hourlyPay;
+		private String password;
+		private double hoursWorked;
 		
 		//Checks to see if the user is currently clocked-in
 		private boolean isActive;
@@ -47,6 +48,18 @@ public class Employee{
 			
 		}
 		
+		//Logs in the employee
+		public void logIn()
+		{
+			isActive = true;
+		}
+		
+		//Logs out the employee
+		public void logOut()
+		{
+			isActive = false;
+		}
+		
 		//Clocks in the employee
 		public void clockIn()
 		{
@@ -62,7 +75,7 @@ public class Employee{
 		//lets the employee see how many hours they have worked
 		public double viewHours()
 		{
-			
+			return hoursWorked;
 		}
 		
 		/*Sets a new password for the employee*/
