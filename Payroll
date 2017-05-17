@@ -2,8 +2,12 @@ public class Payroll{
   
   private Date workStart;
   private Date workEnd;
+  pravate Hashtable Employees;
+  
   public static void createEmployee(Employee worker){
-    //add specified employee to hashtable/arraylist
+  
+    Employees.put(worker.getID(), worker);
+    
   }
   
   public static void deleteEmployee(Employee worker){
