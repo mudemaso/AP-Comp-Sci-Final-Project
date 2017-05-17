@@ -28,34 +28,52 @@ public class Employee{
 			}
 	
 	//methods
+		
+		//returns id of Employee
+		public String getID()
+		{
+			return id;
+		}
+		
 		//Add historical times clocked as read in from our file
-		public void addTimesClocked(String savedTimeClocked);
-			{
-			}
+		public void addTimesClocked(String savedTimeClocked)
+		{
+			
+		}
+		
 		//returns the wages that the employee has earned in the work period
-		public double getPay(Date startDate, Date endDate);
-			{
-			}
+		public double getPay(Date startDate, Date endDate)
+		{
+			
+		}
+		
 		//Clocks in the employee
-		public void clockIn();
-			{
-			}
+		public void clockIn()
+		{
+			
+		}
+		
 		//Clocks out the employee
-		public void clockOut();
-			{
-			}
+		public void clockOut()
+		{
+			
+		}
+		
 		//lets the employee see how many hours they have worked
-		public double viewHours();
-			{
-			}
+		public double viewHours()
+		{
+			
+		}
+		
 		/*Sets a new password for the employee*/
-			public void setPassword(String password)
-			{
-				pass = password;
-			}
+		public void setPassword(String password)
+		{
+			pass = password;
+		}
+		
 		/*Sets a new wage for the employee*/
-			public void setWage(double wage)
-			{
-				this.wage = wage;
-			}
+		public void setWage(double wage)
+		{
+			this.wage = wage;
+		}
 }
