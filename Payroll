@@ -2,34 +2,44 @@ public class Payroll{
   
   private Date workStart;
   private Date workEnd;
-  pravate Hashtable Employees;
+  private String currentID;
+  pravate Hashtable employees;
   
-  public static void createEmployee(Employee worker){
-  
-    Employees.put(worker.getID(), worker);
-    
+  public static void createEmployee(Employee worker)
+  {
+    employees.put(worker.getID(), worker);
   }
   
-  public static void deleteEmployee(Employee worker){
-    //remove specified employee from hashtable/arraylist
+  public static void deleteEmployee(Employee worker)
+  {
+    employees.remove(worker.getID());
   }
   
-  public static void login(String idnum, String Password){
-    //check for id and password to be correct
+  public static void login(String idnum, String password)
+  {
+    if (employees.containsKey(idnum) && employees.get(idnum).getPassword() == password)
+    {
+      employees.get(idnum).logIn();
+      currentID = idnum;
+    }
   }
   
-  public static void logout(){
-    
+  public static void logout()
+  {
+    employees.get(currentID).logOut();
   }
   
-  public static void clockIn(Employee worker){
+  public static void clockIn(Employee worker)
+  {
     workStart = Date();
   }
   
-  public static void clockOut(Employee worker){
+  public static void clockOut(Employee worker)
+  {
     workEnd = Date();
   }
   
-  public static ArrayList<Employee> getActiveEmployees(){
+  public static ArrayList<Employee> getActiveEmployees()
+  {
      
   }
