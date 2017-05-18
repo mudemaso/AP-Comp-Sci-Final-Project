@@ -7,8 +7,8 @@ public class Administrator Extends Employee {
   }
   
   public void createEmployee(String fname, String lname, int idNum, String password, double wage){
-    worker idnum = new worker(fname, lname, idNum, password, wage);
-    Payroll.createEmployee(idnum);
+    worker idNum = new worker(fname, lname, idNum, password, wage);
+    Payroll.createEmployee(idNum);
   }
   
   public void deleteEmployee(Employee worker){
