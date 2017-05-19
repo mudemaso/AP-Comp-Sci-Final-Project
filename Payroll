@@ -45,5 +45,6 @@ public class Payroll{
   
   public static ArrayList<Employee> getActiveEmployees()
   {
-     
+     ArrayList<Employee> arr = new ArrayList<Employee>(employees.values());
+     return arr;
   }
