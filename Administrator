@@ -1,21 +1,25 @@
-public class Administrator Extends Employee {
 
-  public Administrator(String fname, String lname, int idNum, String password, double wage)
+public class Administrator extends Employee {
+	
+  //Gives the employee Administrative permissions
+  private boolean isAdmin;	
+	
+  public Administrator(String fname, String lname, int idNum, boolean changePassword, String password, double wage)
   {
-    super(fname, lname, idNum, password, wage);
+  	super(fname, lname, idNum, changePassword, password, wage);
     isAdmin = true;
   }
-  
-  public void createEmployee(String fname, String lname, int idNum, String password, double wage){
+ 
+/*  
+  public void createEmployee(String fname, String lname, int idNum, boolean changePassword, String password, double wage){
     worker idNum = new worker(fname, lname, idNum, password, wage);
     Payroll.createEmployee(idNum);
   }
+
   
   public void deleteEmployee(Employee worker){
     worker = null;
     Payroll.deleteEmployee(worker);
   }
-  
-  public void updateHourlyPay(double newPay, Employee worker){
-    //updates the pay of the specified worker
-  }
+ */  
+}
