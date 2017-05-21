@@ -1,50 +1,215 @@
 import java.util.Hashtable;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.io.FileReader;
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Payroll{
   
-  private Date workStart;
-  private Date workEnd;
-  private String currentID;
-  pravate Hashtable employees;
+  private LocalDateTime workStart;
+  private LocalDateTime workEnd;
+    
+  // currently logged in employee;
+  private Employee loggedInEmployee;
   
-  public static void createEmployee(Employee worker)
+  // hash of employee id -> employee
+  private Hashtable<Integer, Employee> employees;
+  
+  // filename that contains the list of employees
+  private String employeeFilename;
+  
+  // filename that contains all clock-in/clock-out activity of employees
+  private String hoursWorkedFilename;
+  
+  public Payroll(String employeeFilename, String hoursWorkedFilename)
   {
-    employees.put(worker.getID(), worker);
+  	this.employeeFilename = employeeFilename;
+  	this.hoursWorkedFilename = hoursWorkedFilename;
+  	this.employees = new Hashtable<Integer, Employee>();
+  	
+  	// load the list of employees and create appropropriate employee objects
+  	try
+  	{
+  		loadEmployees();	
+  	}
+  	catch(FileNotFoundException exc)
+  	{
+  		System.out.println("Could not find employees file: " + this.employeeFilename);
+  	}
+  	catch(InvalidEmployeeTypeException exc)
+  	{
+  		System.out.println("err= " + exc.toString());
+  	}
+  	
+  	// load the list of employees and create appropropriate employee objects
+  	try
+  	{
+  		loadHoursWorked();	
+  	}
+  	catch(FileNotFoundException exc)
+  	{
+  		System.out.println("Could not find employees file: " + this.employeeFilename);
+  	}
   }
   
-  public static void deleteEmployee(Employee worker)
+  public void loadEmployees()
+  	throws FileNotFoundException, InvalidEmployeeTypeException
   {
-    employees.remove(worker.getID());
+  	FileReader reader = new FileReader(this.employeeFilename);
+  	Scanner in = new Scanner(reader);
+  	
+  	while (in.hasNextLine())
+  	{
+  		String line = in.nextLine();
+  		if (line.charAt(0) == '#')
+  			continue;
+  		
+  		String[] fields = line.split(",");
+  		String type = fields[0].trim();
+  		String fname = fields[1].trim();
+  		String lname = fields[2].trim();
+  		int id = Integer.parseInt(fields[3].trim());
+  		boolean changePassword = (Integer.parseInt(fields[4].trim()) == 1);
+  		String password = fields[5].trim();
+  		double wageRate = Double.parseDouble(fields[6].trim());
+  		
+  		Employee emp = null;
+  		if (type.equals("Administrator") )
+  			// construct an Administrator object
+  			emp = new Administrator(fname, lname, id, changePassword, password, wageRate);
+  		else if (type.equals("Worker"))
+  			// construct a Worker object
+  			emp = new Worker(fname, lname, id, changePassword, password, wageRate);
+  		else
+  			// throw exception
+  			throw new InvalidEmployeeTypeException("Unsupported employee type: " + type);
+  		
+  		if (emp != null)
+  		{
+  		  this.employees.put(id, emp);
+  		}		
+  	}
+  	
+  	System.out.println(String.format("Finished loading %d employees", this.employees.size()) );
   }
   
-  public static void login(String idnum, String password)
+  /**
+   * Loads the historical hours worked for each employee
+   */
+  public void loadHoursWorked() throws FileNotFoundException
   {
-    if (employees.containsKey(idnum) && employees.get(idnum).getPassword() == password)
+  	FileReader reader = new FileReader(this.employeeFilename);
+  	Scanner in = new Scanner(reader);
+  	
+  	while (in.hasNextLine())
+  	{
+  		String line = in.nextLine();
+  		if (line.charAt(0) == '#')
+  			continue;
+  	}
+  }
+  
+  /**
+   System.out.println("Enter output file name:");
+    	Scanner console = new Scanner(System.in);
+    	String outputFileName = console.next();
+    	PrintWriter out = new PrintWriter(outputFileName);
+   
+**/ 
+  public void login(int id, String password) throws WrongIDException, WrongPasswordException, ChangePasswordException
+  {
+  	// check if another employee is logged in and log them out
+  	if (this.loggedInEmployee != null)
+  		logout();
+  	
+  	Employee emp = 	employees.get(id);
+  	if (emp == null)
+  		throw new WrongIDException(String.format("Could not find id=%d", id));
+  	
+  	emp.login(password);
+  	this.loggedInEmployee = emp;
+  }
+
+  public void logout()
+  {
+     this.loggedInEmployee.logout();
+     this.loggedInEmployee = null;
+  }
+  
+  /**
+   * Clocks in the currently logged in employee
+   */
+  public void clockIn()
+  {
+  	try
+  	{
+  		LocalDateTime currentTime = LocalDateTime.now();
+  		this.loggedInEmployee.clockIn(LocalDateTime.now());	
+  		recordClockInTime(currentTime);
+  	}
+    catch (ForgotToClockoutException exc)
     {
-      employees.get(idnum).logIn();
-      currentID = idnum;
+    	System.out.println("Need to force clockout");
     }
   }
   
-  public static void logout()
+  /**
+   * Clocks out the currently logged in employee
+   */
+  public void clockOut()
   {
-    employees.get(currentID).logOut();
+  	LocalDateTime currentTime = LocalDateTime.now();
+  	this.loggedInEmployee.clockOut();
+  	recordClockOutTime(currentTime);
   }
   
-  public static void clockIn(Employee worker)
+  private void recordClockInTime(LocalDateTime clockInTime)
   {
-    workStart = Date();
+  	try
+  	{
+  		PrintWriter out = new PrintWriter(new FileWriter(this.hoursWorkedFilename, true));
+  		String clockInEntry = String.format("%d, clockIn, %s", this.loggedInEmployee.getId(), clockInTime.toString());
+  		out.println(clockInEntry);
+  		out.close();
+  	}
+  	catch(FileNotFoundException exc)  	
+  	{
+  		System.out.println("Could not open file");
+  	}
+  	catch(IOException exc)  	
+  	{
+  		System.out.println("Could not open file");
+  	}
+  }
+    
+  private void recordClockOutTime(LocalDateTime clockOutTime)
+  {
+  	try
+  	{
+  		PrintWriter out = new PrintWriter(new FileWriter(this.hoursWorkedFilename, true));
+  		String clockOutEntry = String.format("%d, clockOut, %s", this.loggedInEmployee.getId(), clockOutTime.toString());
+  		out.println(clockOutEntry);
+  		out.close();
+  	}
+  	catch (FileNotFoundException exc)
+  	{
+  		System.out.println("Could not open file");
+  	}
+  	catch(IOException exc)  	
+  	{
+  		System.out.println("Could not open file");
+  	}
   }
   
-  public static void clockOut(Employee worker)
-  {
-    workEnd = Date();
-  }
-  
-  public static ArrayList<Employee> getActiveEmployees()
+  /*
+  public ArrayList<Employee> getloggedInEmployees()
   {
      ArrayList<Employee> arr = new ArrayList<Employee>(employees.values());
      return arr;
   }
+  */
+}
