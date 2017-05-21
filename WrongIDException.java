@@ -1,0 +1,7 @@
+public class WrongIDException extends IllegalArgumentException{
+	
+  public WrongIDException(String s)
+  {
+    super(s);
+  }
+}
