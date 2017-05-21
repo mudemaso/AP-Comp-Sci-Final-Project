@@ -5,89 +5,129 @@ import java.time.LocalDateTime;
 public class Employee{
 	
 	//instance fields
-		private String id;
-		private String firstName;
-		private String lastName;
-		private double hourlyPay;
-		private String password;
-		private double hoursWorked;
-		
-		//Checks to see if the user is currently clocked-in
-		private boolean isActive;
-		
-		//The date the employee joined the company
-		private Date startDate;
-		
-		//hours worked by this employee
-		private ArrayList<TimeClocked> hoursWorked;
-		
-		//Gives the employee Administrative permissions
-		private boolean isAdmin;
-		
+	private int id;
+	private String firstName;
+	private String lastName;
+	private double wageRate;
+	private boolean changePassword;
+	private String password;
+	private LocalDateTime lastClockInTime;
+	
+	//Checks to see if the user is currently clocked-in
+	private boolean isActive;
+	
+	//The date the employee joined the company
+	private Date startDate;
+	
+	//hours worked by this employee
+	private ArrayList<TimeWorked> timeWorkedList;
+			
 	//constructor
-		public Employee(String inputFromInfoFile)
-			{
-			}
+	public Employee(String fname, String lname, int id, boolean changePassword, String password, double wageRate)
+	{
+		this.firstName = fname;
+		this.lastName = lname;
+		this.id = id;
+		this.changePassword = changePassword;
+		this.password = password;
+		this.wageRate = wageRate;
+		
+		this.isActive = false;
+		timeWorkedList = new ArrayList<TimeWorked>();
+	}
 	
 	//methods
 		
-		//returns id of Employee
-		public String getID()
-		{
-			return id;
-		}
-		
-		//Add historical times clocked as read in from our file
-		public void addTimesClocked(String savedTimeClocked)
-		{
+	//returns id of Employee
+	public int getId()
+	{
+		return id;
+	}
+	
+	//Add historical times clocked as read in from our file
+	public void addTimesClocked(String savedTimeClocked)
+	{	
+	}
+	
+	//returns the wages that the employee has earned in the work period
+	public double getPay(Date startDate, Date endDate)
+	{
+		return 0.0;
+	}
+	
+	//Logs in the employee
+	public boolean login(String password) throws ChangePasswordException, WrongPasswordException
+	{
+		if (this.changePassword)
+			throw new ChangePasswordException("Please change password");
 			
-		}
+		if (! password.equals(this.password))
+			throw new WrongPasswordException("Incorrect password");
 		
-		//returns the wages that the employee has earned in the work period
-		public double getPay(Date startDate, Date endDate)
-		{
+		System.out.println(String.format("User (id=%d, fname=%s) logged in", this.id, this.firstName) );
+		return true;
+	}
+	
+	//Logs out the employee
+	public void logout()
+	{
+		System.out.println(String.format("User (id=%d, fname=%s) logged out", this.id, this.firstName) );
+	}
+	
+	//Clocks in the employee
+	public void clockIn(LocalDateTime clockInTime) throws ForgotToClockoutException
+	{
+		if (isActive)
+			throw new ForgotToClockoutException("Last clock-in was at " + this.lastClockInTime.toString());
+				
+		isActive = true;
+		this.lastClockInTime = clockInTime;
+	}
+	
+	public void clockIn() throws ForgotToClockoutException
+	{
+		this.clockIn(LocalDateTime.now());
+	}
+	
+	//Clocks out the employee
+	public void clockOut(LocalDateTime clockOutTime)
+	{
+		isActive = false;
+		TimeWorked timeWorked = new TimeWorked(this.lastClockInTime, clockOutTime);
+		
+		// add the timeWorked to the list of all previous timeWorked
+		timeWorkedList.add(timeWorked);
+	}
+	
+	public void clockOut() 
+	{
+		this.clockOut(LocalDateTime.now());
+	}
+	
+	//lets the employee see how many hours they have worked
+	public double viewHours()
+	{
+		double totalHours = 0;
+		for(int i=0; i < timeWorkedList.size(); i++)
+			totalHours += timeWorkedList.get(i).getHoursWorked();
 			
-		}
-		
-		//Logs in the employee
-		public void logIn()
-		{
-			isActive = true;
-		}
-		
-		//Logs out the employee
-		public void logOut()
-		{
-			isActive = false;
-		}
-		
-		//Clocks in the employee
-		public void clockIn()
-		{
-			
-		}
-		
-		//Clocks out the employee
-		public void clockOut()
-		{
-			
-		}
-		
-		//lets the employee see how many hours they have worked
-		public double viewHours()
-		{
-			return hoursWorked;
-		}
-		
-		/*Sets a new password for the employee*/
-		public void setPassword(String password)
-		{
-			pass = password;
-		}
-		
-		/*Sets a new wage for the employee*/
-		public void setWage(double wage)
-		{
-			this.wage = wage;
-		}
+		return totalHours;
+	}
+	
+	/*Sets a new password for the employee*/
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+	
+	/*Sets a new wage for the employee*/
+	public void setWageRate(double wageRate)
+	{
+		this.wageRate = wageRate;
+	}
+	 	
+   	public void updateHourlyPay(double newPay)
+   	{
+    //updates the pay of the specified worker
+  	}
 }
