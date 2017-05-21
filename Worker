@@ -1,5 +1,7 @@
-public class Worker extends Employee{
-  public Worker(String fname, String lname, int idNum, String password, double wage){
-    super(fname, lname, idNum, password, wage);
+public class Worker extends Employee
+{	
+  public Worker(String fname, String lname, int id, boolean changePassword, String password, double wageRate)
+  {
+    super(fname, lname, id, changePassword, password, wageRate);
   }
 }
